@@ -81,11 +81,11 @@ class AdformAPI:
                 df_stat = pd.DataFrame(np.array(df_stat_array["reportData"][2]),
                                 columns=df_stat_array["reportData"][0])
                 for i in range(len(Specification.SPECS[i])):
-                conversions_column = i+7
-                metric_name = Specification.CONV_NAME[conv_name_rank]
-                df_stage = pd.DataFrame()
-                df_stage = df_stat.iloc[:,  [0, 1, 2, 3, 4, 5, 6, conversions_column]]
-                df_stage["metric_name"] = metric_name
-                df_stat_all = df_stat_all.append(df_stage,ignore_index=True)
-                conv_name_rank += 1
+                    conversions_column = i+7
+                    metric_name = Specification.CONV_NAME[conv_name_rank]
+                    df_stage = pd.DataFrame()
+                    df_stage = df_stat.iloc[:,  [0, 1, 2, 3, 4, 5, 6, conversions_column]]
+                    df_stage["metric_name"] = metric_name
+                    df_stat_all = df_stat_all.append(df_stage,ignore_index=True)
+                    conv_name_rank += 1
         return df_stat_all, message
