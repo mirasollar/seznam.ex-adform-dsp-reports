@@ -1,4 +1,5 @@
 from specification import Specification
+from mso_date_convertor import get_date
 
 import requests
 import json
@@ -12,6 +13,7 @@ from pytz import timezone
 import warnings
 warnings.filterwarnings("ignore")
 from retrying import retry
+
 
 class AdformAPI:
     def __init__(self, client_id, client_secret):
@@ -27,8 +29,10 @@ class AdformAPI:
         access_token = str(response.json()["access_token"])
         return access_token
 
-    def get_stat_urls(self):
+    def get_stat_urls(self, start_num, end_num):
       access_token = self._get_access_token()
+      start_date = get_date(start_num)
+      end_date = get_date(end_num)
       stat_url_list = []
 
       for i in range(len(Specification.SPECS)):
@@ -46,7 +50,7 @@ class AdformAPI:
           Specification.SPECS[i]
         ,
           "filter": {
-            "date": {"from": '2022-12-25', "to": '2022-12-25'}
+            "date": {"from": start_date, "to": end_date}
           },
           "paging": {
               "limit": 0
