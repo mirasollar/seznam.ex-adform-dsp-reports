@@ -101,29 +101,3 @@ class AdformAPI:
             conv_name_rank += 1
       return df_stat_all, message
 
-if __name__ == "__main__":
-  adf = AdformAPI("reporting.seznam.cz@clients.adform.com", "0mY2KIYT8OIxi46qqQV_2S5lBR1y6Gl9VjrgFSuD")
-
-  urls = adf.get_stat_urls()
-  print(urls)
-
-  # stats_data_ok = adf.get_stats(urls)
-
-  @retry(stop_max_attempt_number=2, wait_exponential_multiplier=2000)
-  def stats_stop_after_attempts():
-    stats_data = adf.get_stats(urls)
-    if stats_data[1].count('OK') != 11:
-      raise IOError("Stopping after some attempts...")
-    else:
-      return stats_data
-
-  stats_data_ok = stats_stop_after_attempts()
-
-  print(stats_data_ok[1].count('OK'))
-  print(stats_data_ok[1])
-
-  df_conversions = stats_data_ok[0].rename(columns={"conversions": "metric_value"})
-    
-  df_conversions.to_csv('conversions.csv', index=False, encoding = 'utf-8')
-
-  # https://stackoverflow.com/questions/58140435/how-to-organize-python-api-module-to-make-it-neat
