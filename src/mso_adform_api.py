@@ -17,9 +17,9 @@ class AdformAPI:
     def _get_access_token(self):
         response = requests.post('https://id.adform.com/sts/connect/token',
                                  data={"grant_type": "client_credentials",
-                                 "client_id": self.client_id,
-                                 "client_secret": self.client_secret,
-                                 "scope": "https://api.adform.com/scope/buyer.stats"})
+                                       "client_id": self.client_id,
+                                       "client_secret": self.client_secret,
+                                       "scope": "https://api.adform.com/scope/buyer.stats"})
         access_token = str(response.json()["access_token"])
         return access_token
 
@@ -31,15 +31,7 @@ class AdformAPI:
 
         for i in range(len(Specification.SPECS)):
             body = {
-              "dimensions": [
-              "client",
-              "order",
-              "lineItem",
-              "bannerSize",
-              "rtbAudience",
-              "campaign",
-              "date"
-            ],
+              "dimensions": ["client", "order", "lineItem", "bannerSize", "rtbAudience", "campaign", "date"],
               "metrics": 
               Specification.SPECS[i],
               "filter": {
