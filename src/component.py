@@ -1,10 +1,11 @@
+import mso_adform_api as adfapi
 from keboola.component.base import ComponentBase
 from keboola.component.exceptions import UserException
-import mso_adform_api as adfapi
 import logging
 import warnings
 warnings.filterwarnings("ignore")
 from retrying import retry
+
 
 # configuration variables
 KEY_CLIENT_ID = 'client_id'
@@ -52,7 +53,7 @@ class Component(ComponentBase):
         # Create output table (Tabledefinition - just metadata)
         incremental = params.get(KEY_INCREMENTAL)
         table = self.create_out_table_definition('conversions.csv', incremental=incremental,
-                                                 primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
+        primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
 
         logging.info('Extracting reports from Adform...')
         client_id = params.get(KEY_CLIENT_ID)
