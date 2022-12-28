@@ -1,23 +1,10 @@
+from keboola.component.base import ComponentBase
+from keboola.component.exceptions import UserException
 import mso_adform_api as adfapi
-import csv
 import logging
-from datetime import datetime, timedelta
-
-import requests
-import json
-import re
-import pandas as pd
-import numpy as np
-import time
-
-from pytz import timezone
 import warnings
 warnings.filterwarnings("ignore")
 from retrying import retry
-
-
-from keboola.component.base import ComponentBase
-from keboola.component.exceptions import UserException
 
 # configuration variables
 KEY_CLIENT_ID = 'client_id'
@@ -64,18 +51,15 @@ class Component(ComponentBase):
 
         # Create output table (Tabledefinition - just metadata)
         incremental = params.get(KEY_INCREMENTAL)
-        table = self.create_out_table_definition('conversions.csv', incremental=incremental, primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
+        table = self.create_out_table_definition('conversions.csv', incremental=incremental,
+                                                 primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
 
         logging.info('Extracting reports from Adform...')
         client_id = params.get(KEY_CLIENT_ID)
         client_secret = params.get(KEY_CLIENT_SECRET)
-
-
         adf = adfapi.AdformAPI(client_id, client_secret)
-        
         start_num = params.get(KEY_START_NUM)
         end_num = params.get(KEY_END_NUM)
-
         urls = adf.get_stat_urls(start_num, end_num)
 
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
