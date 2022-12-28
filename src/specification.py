@@ -1,5 +1,5 @@
 class Specification:
-CONV_NAME = ['conversion_1',
+    CONV_NAME = ['conversion_1',
             'conversion_2',
             'conversion_3',
             'conversion_4',
@@ -107,7 +107,7 @@ CONV_NAME = ['conversion_1',
             'conversion_106',
             'conversion_107',
             'conversion_108']
-SPECS = [[{'metric': 'conversions',
+    SPECS = [[{'metric': 'conversions',
    'specs': {'adInteraction': 'all',
              'conversionType': 'conversionType1',
              'pageCategory': 'allPages'}},
