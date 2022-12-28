@@ -2,15 +2,11 @@ from specification import Specification
 from mso_date_convertor import get_date
 
 import requests
-import json
-import re
 import pandas as pd
 import numpy as np
-import csv
 import time
 import warnings
 warnings.filterwarnings("ignore")
-from retrying import retry
 
 
 class AdformAPI:
