@@ -20,12 +20,15 @@ from keboola.component.base import ComponentBase
 from keboola.component.exceptions import UserException
 
 # configuration variables
-KEY_CLIENT_SECRET = '#client_secret'
 KEY_CLIENT_ID = 'client_id'
+KEY_CLIENT_SECRET = '#client_secret'
+KEY_START_NUM = 'start_num'
+KEY_END_NUM = 'end_num'
+KEY_INCREMENTAL = 'incremental_output'
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
-REQUIRED_PARAMETERS = [KEY_CLIENT_SECRET, KEY_CLIENT_ID]
+REQUIRED_PARAMETERS = [KEY_CLIENT_SECRET, KEY_CLIENT_ID, KEY_START_NUM, KEY_END_NUM, KEY_INCREMENTAL]
 
 
 class Component(ComponentBase):
@@ -52,27 +55,30 @@ class Component(ComponentBase):
         self.validate_configuration_parameters(REQUIRED_PARAMETERS)
         params = self.configuration.parameters
         # Access parameters in data/config.json
-        if params.get(KEY_PRINT_HELLO):
-            logging.info("Hello World")
+        if params.get(KEY_CLIENT_SECRET):
+            logging.info('Loading configuration...')
 
         # get last state data/in/state.json from previous run
         previous_state = self.get_state_file()
         logging.info(previous_state.get('some_state_parameter'))
 
         # Create output table (Tabledefinition - just metadata)
-        table = self.create_out_table_definition('conversions.csv', incremental=True, primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
+        incremental = params.get(KEY_INCREMENTAL)
+        table = self.create_out_table_definition('conversions.csv', incremental=incremental, primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
 
-        # get file path of the table (data/out/tables/Features.csv)
-        out_table_path = table.full_path
-        logging.info(out_table_path)
+        logging.info('Extracting reports from Adform...')
+        client_id = params.get(KEY_CLIENT_ID)
+        client_secret = params.get(KEY_CLIENT_SECRET)
 
 
-        adf = adfapi.AdformAPI("reporting.seznam.cz@clients.adform.com", "0mY2KIYT8OIxi46qqQV_2S5lBR1y6Gl9VjrgFSuD")
+        adf = adfapi.AdformAPI(client_id, client_secret)
+        
+        start_num = params.get(KEY_START_NUM)
+        end_num = params.get(KEY_END_NUM)
 
-        urls = adf.get_stat_urls()
-        print(urls)
+        urls = adf.get_stat_urls(start_num, end_num)
 
-        @retry(stop_max_attempt_number=2, wait_exponential_multiplier=2000)
+        @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
         def stats_stop_after_attempts():
             stats_data = adf.get_stats(urls)
             if stats_data[1].count('OK') != 11:
@@ -82,26 +88,15 @@ class Component(ComponentBase):
 
         stats_data_ok = stats_stop_after_attempts()
 
-        print(stats_data_ok[1].count('OK'))
-        print(stats_data_ok[1])
-
         df_conversions = stats_data_ok[0].rename(columns={"conversions": "metric_value"})
             
         df_conversions.to_csv(table.full_path, index=False, encoding = 'utf-8')
-
-        # DO whatever and save into out_table_path
-        # with open(table.full_path, mode='wt', encoding='utf-8', newline='') as out_file:
-        #     writer = csv.DictWriter(out_file, fieldnames=['timestamp'])
-        #     writer.writeheader()
-        #     writer.writerow({"timestamp": datetime.now().isoformat()})
 
         # Save table manifest (output.csv.manifest) from the tabledefinition
         self.write_manifest(table)
 
         # Write new state - will be available next run
         self.write_state_file({"some_state_parameter": "value"})
-
-        # ####### EXAMPLE TO REMOVE END
 
 
 """
