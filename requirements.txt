@@ -5,7 +5,6 @@ mock
 freezegun
 pandas
 retrying
-warnings
 requests
 numpy
 time
