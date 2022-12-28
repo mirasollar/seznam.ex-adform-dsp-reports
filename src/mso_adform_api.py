@@ -30,35 +30,34 @@ class AdformAPI:
         stat_url_list = []
 
         for i in range(len(Specification.SPECS)):
-        body = {
-          "dimensions": [
-          "client",
-          "order",
-          "lineItem",
-          "bannerSize",
-          "rtbAudience",
-          "campaign",
-          "date"
-        ],
-          "metrics": 
-          Specification.SPECS[i],
-          "filter": {
-          "date": {"from": start_date, "to": end_date}
-          },
-          "paging": {
-           "limit": 0
-          }
-        }
-        response = requests.post("https://api.adform.com/v1/buyer/stats/data",
-                        headers={"Content-Type": "application/json", "Authorization": f"Bearer {access_token}",  "Accept": "application/json"},
-                        json=body)
-        endpoint = response.headers["Location"]
-        stat_url = f"https://api.adform.com{endpoint}"
-        stat_url_list.append(stat_url)
-        # Limit na počet vytvořených reportů je 10 za minutu. Reportů je 11, takže je potřeba cyklus zpozdit.
-        time.sleep(6)
-      return stat_url_list
-
+            body = {
+              "dimensions": [
+              "client",
+              "order",
+              "lineItem",
+              "bannerSize",
+              "rtbAudience",
+              "campaign",
+              "date"
+            ],
+              "metrics": 
+              Specification.SPECS[i],
+              "filter": {
+              "date": {"from": start_date, "to": end_date}
+              },
+              "paging": {
+               "limit": 0
+              }
+            }
+            response = requests.post("https://api.adform.com/v1/buyer/stats/data",
+                            headers={"Content-Type": "application/json", "Authorization": f"Bearer {access_token}",  "Accept": "application/json"},
+                            json=body)
+            endpoint = response.headers["Location"]
+            stat_url = f"https://api.adform.com{endpoint}"
+            stat_url_list.append(stat_url)
+            # Limit na počet vytvořených reportů je 10 za minutu. Reportů je 11, takže je potřeba cyklus zpozdit.
+            time.sleep(6)
+        return stat_url_list
 
     def get_stats(self, url_list):
       access_token = self._get_access_token()
@@ -95,4 +94,3 @@ class AdformAPI:
             df_stat_all = df_stat_all.append(df_stage,ignore_index=True)
             conv_name_rank += 1
       return df_stat_all, message
-
