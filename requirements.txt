@@ -3,3 +3,11 @@ keboola.utils
 keboola.http-client
 mock
 freezegun
+pandas
+retrying
+warnings
+requests
+numpy
+time
+datetime
+pytz
