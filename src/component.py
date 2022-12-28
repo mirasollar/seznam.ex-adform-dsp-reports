@@ -51,8 +51,14 @@ class Component(ComponentBase):
 
         # Create output table (Tabledefinition - just metadata)
         incremental = params.get(KEY_INCREMENTAL)
-        table = self.create_out_table_definition('conversions.csv', incremental=incremental,
-            primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
+        table = self.create_out_table_definition('conversions.csv', incremental=incremental, primary_key=['client',
+                                                                                                          'order',
+                                                                                                          'lineItem',
+                                                                                                          'bannerSize',
+                                                                                                          'rtbAudience',
+                                                                                                          'campaign',
+                                                                                                          'date',
+                                                                                                          'metric_name'])
 
         logging.info('Extracting reports from Adform...')
         client_id = params.get(KEY_CLIENT_ID)
