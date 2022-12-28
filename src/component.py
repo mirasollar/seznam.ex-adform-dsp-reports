@@ -52,7 +52,7 @@ class Component(ComponentBase):
         # Create output table (Tabledefinition - just metadata)
         incremental = params.get(KEY_INCREMENTAL)
         table = self.create_out_table_definition('conversions.csv', incremental=incremental,
-        primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
+            primary_key=['client', 'order', 'lineItem', 'bannerSize', 'rtbAudience', 'campaign', 'date', 'metric_name'])
 
         logging.info('Extracting reports from Adform...')
         client_id = params.get(KEY_CLIENT_ID)
@@ -73,8 +73,7 @@ class Component(ComponentBase):
         stats_data_ok = stats_stop_after_attempts()
 
         df_conversions = stats_data_ok[0].rename(columns={"conversions": "metric_value"})
-            
-        df_conversions.to_csv(table.full_path, index=False, encoding = 'utf-8')
+        df_conversions.to_csv(table.full_path, index=False, encoding='utf-8')
 
         # Save table manifest (output.csv.manifest) from the tabledefinition
         self.write_manifest(table)
