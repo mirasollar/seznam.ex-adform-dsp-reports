@@ -32,18 +32,20 @@ class AdformAPI:
         for i in range(len(Specification.SPECS)):
             body = {
               "dimensions": ["client", "order", "lineItem", "bannerSize", "rtbAudience", "campaign", "date"],
-              "metrics": 
+              "metrics":
               Specification.SPECS[i],
               "filter": {
-              "date": {"from": start_date, "to": end_date}
+                "date": {"from": start_date, "to": end_date}
               },
               "paging": {
-               "limit": 0
+                "limit": 0
               }
             }
             response = requests.post("https://api.adform.com/v1/buyer/stats/data",
-                            headers={"Content-Type": "application/json", "Authorization": f"Bearer {access_token}",  "Accept": "application/json"},
-                            json=body)
+                                     headers={"Content-Type": "application/json",
+                                              "Authorization": f"Bearer {access_token}",
+                                              "Accept": "application/json"},
+                                     json=body)
             endpoint = response.headers["Location"]
             stat_url = f"https://api.adform.com{endpoint}"
             stat_url_list.append(stat_url)
