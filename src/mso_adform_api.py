@@ -11,27 +11,27 @@ warnings.filterwarnings("ignore")
 
 class AdformAPI:
     def __init__(self, client_id, client_secret):
-      self.client_id = client_id
-      self.client_secret = client_secret
+        self.client_id = client_id
+        self.client_secret = client_secret
 
     def _get_access_token(self):
         response = requests.post('https://id.adform.com/sts/connect/token',
-                                  data={"grant_type": "client_credentials",
-                                  "client_id": self.client_id,
-                                  "client_secret": self.client_secret,
-                                  "scope": "https://api.adform.com/scope/buyer.stats"})
+                                 data={"grant_type": "client_credentials",
+                                 "client_id": self.client_id,
+                                 "client_secret": self.client_secret,
+                                 "scope": "https://api.adform.com/scope/buyer.stats"})
         access_token = str(response.json()["access_token"])
         return access_token
 
     def get_stat_urls(self, start_num, end_num):
-      access_token = self._get_access_token()
-      start_date = get_date(start_num)
-      end_date = get_date(end_num)
-      stat_url_list = []
+        access_token = self._get_access_token()
+        start_date = get_date(start_num)
+        end_date = get_date(end_num)
+        stat_url_list = []
 
-      for i in range(len(Specification.SPECS)):
+        for i in range(len(Specification.SPECS)):
         body = {
-        "dimensions": [
+          "dimensions": [
           "client",
           "order",
           "lineItem",
@@ -40,14 +40,13 @@ class AdformAPI:
           "campaign",
           "date"
         ],
-        "metrics": 
-          Specification.SPECS[i]
-        ,
+          "metrics": 
+          Specification.SPECS[i],
           "filter": {
-            "date": {"from": start_date, "to": end_date}
+          "date": {"from": start_date, "to": end_date}
           },
           "paging": {
-              "limit": 0
+           "limit": 0
           }
         }
         response = requests.post("https://api.adform.com/v1/buyer/stats/data",
