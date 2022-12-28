@@ -2,10 +2,9 @@ import mso_adform_api as adfapi
 from keboola.component.base import ComponentBase
 from keboola.component.exceptions import UserException
 import logging
+from retrying import retry
 import warnings
 warnings.filterwarnings("ignore")
-from retrying import retry
-
 
 # configuration variables
 KEY_CLIENT_ID = 'client_id'
