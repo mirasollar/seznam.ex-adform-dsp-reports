@@ -3,6 +3,8 @@ from keboola.component.base import ComponentBase
 from keboola.component.exceptions import UserException
 import logging
 from retrying import retry
+import warnings
+warnings.filterwarnings("ignore")
 
 
 # configuration variables
