@@ -68,8 +68,10 @@ class Component(ComponentBase):
         client_id = params.get(KEY_CLIENT_ID)
         client_secret = params.get(KEY_CLIENT_SECRET)
         adf = adfapi.AdformAPI(client_id, client_secret)
-        start_num = params.get(KEY_START_NUM)
-        end_num = params.get(KEY_END_NUM)
+        
+        date_range = params.get[KEY_DATE_RANGE]
+        start_num = date_range[KEY_START_NUM]
+        end_num = date_range[KEY_END_NUM]
         urls = adf.get_stat_urls(start_num, end_num)
 
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
