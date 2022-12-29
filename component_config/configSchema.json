@@ -20,18 +20,7 @@
       "format": "password",
       "propertyOrder": 200
     },
-     "date_range": {
-          "type": "object",
-          "title": "Date",
-          "format": "grid",
-          "description": "Report date range. A maximum date range accessible through API is 397 days (13 months) from today.",
-          "propertyOrder": 300,
-          "required": [
-            "start_num",
-            "end_num"
-          ],
-          "properties": {
-            "start_num": {
+ "start_num": {
               "type": "integer",
               "default": "5",
               "title": "From Date [including]",
@@ -44,9 +33,7 @@
               "default": "1",
               "description": "Number of days ago (e.g. 1 days ago)",
               "propertyOrder": 350
-            }
-          }
-        },
+            },
     "incremental_output": {
     "type": "number",
     "enum": [
