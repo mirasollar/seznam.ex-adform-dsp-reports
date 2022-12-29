@@ -4,6 +4,8 @@
   "required": [
     "client_id",
     "#client_secret",
+    "start_num",
+    "end_num",
     "incremental_output"
   ],
   "properties": {
