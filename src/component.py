@@ -68,7 +68,7 @@ class Component(ComponentBase):
         client_id = params.get(KEY_CLIENT_ID)
         client_secret = params.get(KEY_CLIENT_SECRET)
         adf = adfapi.AdformAPI(client_id, client_secret)
-        
+
         date_range = params.get[KEY_DATE_RANGE]
         start_num = date_range[KEY_START_NUM]
         end_num = date_range[KEY_END_NUM]
