@@ -10,13 +10,14 @@ warnings.filterwarnings("ignore")
 # configuration variables
 KEY_CLIENT_ID = 'client_id'
 KEY_CLIENT_SECRET = '#client_secret'
+KEY_DATE_RANGE = 'date_range'
 KEY_START_NUM = 'start_num'
 KEY_END_NUM = 'end_num'
 KEY_INCREMENTAL = 'incremental_output'
 
 # list of mandatory parameters => if some is missing,
 # component will fail with readable message on initialization.
-REQUIRED_PARAMETERS = [KEY_CLIENT_SECRET, KEY_CLIENT_ID, KEY_START_NUM, KEY_END_NUM, KEY_INCREMENTAL]
+REQUIRED_PARAMETERS = [KEY_CLIENT_ID, KEY_CLIENT_SECRET, KEY_DATE_RANGE, KEY_INCREMENTAL]
 
 
 class Component(ComponentBase):
@@ -47,8 +48,8 @@ class Component(ComponentBase):
             logging.info('Loading configuration...')
 
         # get last state data/in/state.json from previous run
-        previous_state = self.get_state_file()
-        logging.info(previous_state.get('some_state_parameter'))
+        # previous_state = self.get_state_file()
+        # logging.info(previous_state.get('some_state_parameter'))
 
         # Create output table (Tabledefinition - just metadata)
         incremental = params.get(KEY_INCREMENTAL)
