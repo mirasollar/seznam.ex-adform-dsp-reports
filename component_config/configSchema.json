@@ -20,20 +20,20 @@
       "format": "password",
       "propertyOrder": 200
     },
- "start_num": {
-              "type": "integer",
-              "default": "5",
-              "title": "From Date [including]",
-              "description": "Number of days ago (e.g. 5 days ago)",
-              "propertyOrder": 300
-            },
-            "end_num": {
-              "type": "integer",
-              "title": "To Date [including]",
-              "default": "1",
-              "description": "Number of days ago (e.g. 1 days ago)",
-              "propertyOrder": 350
-            },
+    "start_num": {
+        "type": "integer",
+        "default": "5",
+        "title": "From Date [including]",
+        "description": "Number of days ago (e.g. 5 days ago)",
+        "propertyOrder": 300
+    },
+    "end_num": {
+        "type": "integer",
+        "title": "To Date [including]",
+        "default": "1",
+        "description": "Number of days ago (e.g. 1 days ago)",
+        "propertyOrder": 350
+    },
     "incremental_output": {
     "type": "number",
     "enum": [
@@ -51,5 +51,5 @@
     "description": "If set to Incremental update, the result table will be updated based on primary key. Full load overwrites the destination table each time.",
     "propertyOrder": 400
     }
-  }    
+  }
 }
