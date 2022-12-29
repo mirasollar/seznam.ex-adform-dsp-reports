@@ -4,8 +4,6 @@
   "required": [
     "client_id",
     "#client_secret",
-    "start_num",
-    "end_num",
     "incremental_output"
   ],
   "properties": {
@@ -20,36 +18,49 @@
       "format": "password",
       "propertyOrder": 200
     },
-    "start_num": {
-        "type": "integer",
-        "default": "5",
-        "title": "From Date [including]",
-        "description": "Number of days ago (e.g. 5 days ago)",
-        "propertyOrder": 300
-    },
-    "end_num": {
-        "type": "integer",
-        "title": "To Date [including]",
-        "default": "1",
-        "description": "Number of days ago (e.g. 1 days ago)",
-        "propertyOrder": 350
-    },
-    "incremental_output": {
-    "type": "number",
-    "enum": [
-      0,
-      1
-    ],
+     "incremental_output": {
+      "type": "number",
+      "enum": [
+        0,
+        1
+      ],
       "options": {
         "enum_titles": [
           "Full Load",
           "Incremental Update"
         ]
       },
-    "default": 1,
-    "title": "Load type",
-    "description": "If set to Incremental update, the result table will be updated based on primary key. Full load overwrites the destination table each time.",
-    "propertyOrder": 400
+      "default": 1,
+      "title": "Load type",
+      "description": "If set to Incremental update, the result tables will be updated based on primary key. Full load overwrites the destination table each time, with no primary keys.",
+      "propertyOrder": 300
+    },
+        "date_range": {
+        "type": "object",
+        "title": "Date",
+        "format": "grid",
+        "description": "Report date range. A maximum date range accessible through API is 397 days (13 months) from today.",
+        "propertyOrder": 400,
+        "required": [
+        "start_num",
+        "end_num"
+        ],
+        "properties": {
+        "start_num": {
+            "type": "integer",
+            "default": "5",
+            "title": "From Date [including]",
+            "description": "Date in number of days ago.",
+            "propertyOrder": 400
+        },
+        "end_num": {
+            "type": "integer",
+            "title": "To date [including]",
+            "default": "1",
+            "description": "Date in number of days ago.",
+            "propertyOrder": 450
+        }
+      }
     }
   }
 }
