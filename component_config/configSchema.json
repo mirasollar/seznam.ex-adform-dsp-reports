@@ -4,7 +4,8 @@
   "required": [
     "client_id",
     "#client_secret",
-    "incremental_output"
+    "incremental_output",
+    "date_range"
   ],
   "properties": {
     "client_id": {
