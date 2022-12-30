@@ -59,8 +59,8 @@ class AdformAPI:
         # mezi jednotlivými staženími reportů je pro jistotu ještě další zpoždění.
         # Každým cyklem se prodlužuje o sekundu.
         sleep_in_sec = 5
-        # Zpoždění mezi vytvořením reportů a stažením prního reportu.
-        time.sleep(100)
+        # Zpoždění mezi vytvořením reportů a stažením prvního reportu.
+        time.sleep(90)
         for i in range(len(url_list)):
             time.sleep(sleep_in_sec)
             sleep_in_sec += 1
