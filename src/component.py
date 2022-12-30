@@ -64,24 +64,30 @@ class Component(ComponentBase):
                                                               'date',
                                                               'metric_name'])
 
-        logging.info('Extracting reports from Adform...')
+        
         client_id = params.get(KEY_CLIENT_ID)
         client_secret = params.get(KEY_CLIENT_SECRET)
         adf = adfapi.AdformAPI(client_id, client_secret)
 
         date_range = params[KEY_DATE_RANGE]
         start_num, end_num = date_range[KEY_START_NUM], date_range[KEY_END_NUM]
+        logging.info('Creating reports on Adform...')
         urls = adf.get_stat_urls(start_num, end_num)
 
+        logging.info('Extracting reports from Adform...')
+        n_completed_retry = []
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
         def stats_stop_after_attempts():
             stats_data = adf.get_stats(urls)
+            n_completed_retry.append("n")
             if stats_data[1].count('OK') != 11:
                 raise IOError("Stopping after some attempts...")
             else:
                 return stats_data
 
         stats_data_ok = stats_stop_after_attempts()
+        logging.info(f"Retry count: {len(n_completed_retry)}")
+        logging.info('Reports have downloaded.')
 
         df_conversions = stats_data_ok[0].rename(columns={"conversions": "metric_value"})
         df_conversions.to_csv(table.full_path, index=False, encoding='utf-8')
