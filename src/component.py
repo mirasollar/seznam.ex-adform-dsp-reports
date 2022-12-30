@@ -64,7 +64,6 @@ class Component(ComponentBase):
                                                               'date',
                                                               'metric_name'])
 
-        
         client_id = params.get(KEY_CLIENT_ID)
         client_secret = params.get(KEY_CLIENT_SECRET)
         adf = adfapi.AdformAPI(client_id, client_secret)
@@ -76,6 +75,7 @@ class Component(ComponentBase):
 
         logging.info('Extracting reports from Adform...')
         n_completed_retry = []
+
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
         def stats_stop_after_attempts():
             stats_data = adf.get_stats(urls)
