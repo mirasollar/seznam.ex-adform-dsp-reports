@@ -70,8 +70,7 @@ class Component(ComponentBase):
         adf = adfapi.AdformAPI(client_id, client_secret)
 
         date_range = params[KEY_DATE_RANGE]
-        start_num = date_range[KEY_START_NUM]
-        end_num = date_range[KEY_END_NUM]
+        start_num, end_num = date_range[KEY_START_NUM], date_range[KEY_END_NUM]
         urls = adf.get_stat_urls(start_num, end_num)
 
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
