@@ -71,7 +71,12 @@ class Component(ComponentBase):
         date_range = params[KEY_DATE_RANGE]
         start_num, end_num = date_range[KEY_START_NUM], date_range[KEY_END_NUM]
         logging.info('Creating reports on Adform...')
-        urls = adf.get_stat_urls(start_num, end_num)
+        stat_data = adf.get_stat_urls(start_num, end_num)
+        urls = stat_data[0]
+        stat_messages = stat_data[1]
+        
+        for key, value in messages_report.items():
+            logging.info('Report log:', key, ':', value)
 
         logging.info('Extracting reports from Adform...')
         n_completed_retry = []
