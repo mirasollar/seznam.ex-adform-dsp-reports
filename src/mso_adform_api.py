@@ -55,6 +55,7 @@ class AdformAPI:
                 message.append(f'Other error occurred: {err}')
             else:
                 message.append('OK')
+            logging.info(f"Report number {report_number}: {message})
             endpoint = response.headers["Location"]
             stat_url = f"https://api.adform.com{endpoint}"
             stat_url_list.append(stat_url)
