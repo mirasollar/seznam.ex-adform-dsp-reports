@@ -75,10 +75,6 @@ class Component(ComponentBase):
         urls = stat_data[0]
         stat_messages = stat_data[1]
 
-        for key, value in stat_messages.items():
-            to_log = ('Report log:', key, ':', value)
-            logging.info(to_log)
-
         logging.info('Extracting reports from Adform...')
         n_completed_retry = []
 
