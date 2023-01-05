@@ -74,8 +74,8 @@ class Component(ComponentBase):
         stat_data = adf.get_stat_urls(start_num, end_num)
         urls = stat_data[0]
         stat_messages = stat_data[1]
-        
-        for key, value in messages_report.items():
+
+        for key, value in stat_messages.items():
             logging.info('Report log:', key, ':', value)
 
         logging.info('Extracting reports from Adform...')
