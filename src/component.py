@@ -76,7 +76,8 @@ class Component(ComponentBase):
         stat_messages = stat_data[1]
 
         for key, value in stat_messages.items():
-            logging.info('Report log:', key, ':', value)
+            to_log = ('Report log:', key, ':', value)
+            logging.info(to_log)
 
         logging.info('Extracting reports from Adform...')
         n_completed_retry = []
