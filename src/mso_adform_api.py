@@ -49,12 +49,12 @@ class AdformAPI:
                                          json=body)
                 response.raise_for_status()
             except requests.HTTPError as http_err:
-                message = f'HTTP error occurred: {http_err}'
+                status = f'HTTP error occurred: {http_err}'
             except Exception as err:
-                message = f'Other error occurred: {err}'
+                status = f'Other error occurred: {err}'
             else:
-                message = 'OK'
-            logging.info(f'Report number {report_number}: {message}')
+                status = 'OK'
+            logging.info(f'Creating report number {report_number}: {status}')
             endpoint = response.headers["Location"]
             stat_url = f'https://api.adform.com{endpoint}'
             stat_url_list.append(stat_url)
@@ -68,6 +68,7 @@ class AdformAPI:
         access_token = self._get_access_token()
         df_stat_all = pd.DataFrame()
         conv_name_rank = 0
+        report_number = 1
         message = []
         # mezi jednotlivými staženími reportů je pro jistotu ještě další zpoždění.
         # Každým cyklem se prodlužuje o sekundu.
@@ -83,11 +84,13 @@ class AdformAPI:
                                                               "Accept": "application/json"})
                 response.raise_for_status()
             except requests.HTTPError as http_err:
-                message.append(f'HTTP error occurred: {http_err}')
+                status = f'HTTP error occurred: {http_err}'
             except Exception as err:
-                message.append(f'Other error occurred: {err}')
+                status = f'Other error occurred: {err}'
             else:
-                message.append('OK')
+                status = 'OK'
+                logging.info(f'Extracting report number {report_number}: {status}')
+                message.append(status)
                 data = response.json()
                 df_stat_array = pd.DataFrame.from_dict(data)
                 df_stat = pd.DataFrame(np.array(df_stat_array["reportData"][2]), columns=df_stat_array["reportData"][0])
@@ -99,4 +102,5 @@ class AdformAPI:
                     df_stage["metric_name"] = metric_name
                     df_stat_all = df_stat_all.append(df_stage, ignore_index=True)
                     conv_name_rank += 1
+            report_number += 1
         return df_stat_all, message
