@@ -27,8 +27,7 @@ class AdformAPI:
         start_date = get_date(start_num)
         end_date = get_date(end_num)
         stat_url_list = []
-        message = []
-        report_number = []
+        report_number = 1
 
         for i in range(len(Specification.SPECS)):
             body = {
@@ -42,7 +41,6 @@ class AdformAPI:
                 "limit": 0
               }
             }
-            report_number.append(i+1)
             try:
                 response = requests.post("https://api.adform.com/v1/buyer/stats/data",
                                          headers={"Content-Type": "application/json",
@@ -51,20 +49,20 @@ class AdformAPI:
                                          json=body)
                 response.raise_for_status()
             except requests.HTTPError as http_err:
-                message.append(f'HTTP error occurred: {http_err}')
+                message = f'HTTP error occurred: {http_err}'
             except Exception as err:
-                message.append(f'Other error occurred: {err}')
+                message = (f'Other error occurred: {err}'
             else:
-                message.append('OK')
-            logging.info(f"Report number i+1: {message[i]}")
+                message = 'OK'
+            logging.info(f"Report number {report_number}: {message}")
             endpoint = response.headers["Location"]
             stat_url = f"https://api.adform.com{endpoint}"
             stat_url_list.append(stat_url)
             # Limit na počet vytvořených reportů je 10 za minutu. Reportů je 11, takže je potřeba cyklus zpozdit.
             # Původně bylo nastaveno 6 sekund, ale přestalo to stačit. Nově tedy 20
             time.sleep(20)
-        messages_report = dict(zip(report_number, message))
-        return stat_url_list, messages_report
+            report_number += 1
+        return stat_url_list
 
     def get_stats(self, url_list):
         access_token = self._get_access_token()
