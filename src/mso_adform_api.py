@@ -44,19 +44,19 @@ class AdformAPI:
             try:
                 response = requests.post("https://api.adform.com/v1/buyer/stats/data",
                                          headers={"Content-Type": "application/json",
-                                                  "Authorization": f"Bearer {access_token}",
+                                                  "Authorization": f'Bearer {access_token}',
                                                   "Accept": "application/json"},
                                          json=body)
                 response.raise_for_status()
             except requests.HTTPError as http_err:
                 message = f'HTTP error occurred: {http_err}'
             except Exception as err:
-                message = (f'Other error occurred: {err}'
+                message = f'Other error occurred: {err}'
             else:
                 message = 'OK'
-            logging.info(f"Report number {report_number}: {message}")
+            logging.info(f'Report number {report_number}: {message}')
             endpoint = response.headers["Location"]
-            stat_url = f"https://api.adform.com{endpoint}"
+            stat_url = f'https://api.adform.com{endpoint}'
             stat_url_list.append(stat_url)
             # Limit na počet vytvořených reportů je 10 za minutu. Reportů je 11, takže je potřeba cyklus zpozdit.
             # Původně bylo nastaveno 6 sekund, ale přestalo to stačit. Nově tedy 20
@@ -79,7 +79,7 @@ class AdformAPI:
             sleep_in_sec += 1
             try:
                 response = requests.get(url_list[i], headers={"Content-Type": "application/json",
-                                                              "Authorization": f"Bearer {access_token}",
+                                                              "Authorization": f'Bearer {access_token}',
                                                               "Accept": "application/json"})
                 response.raise_for_status()
             except requests.HTTPError as http_err:
