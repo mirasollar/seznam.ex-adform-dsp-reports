@@ -47,10 +47,6 @@ class Component(ComponentBase):
         if params.get(KEY_CLIENT_SECRET):
             logging.info('Loading configuration...')
 
-        # get last state data/in/state.json from previous run
-        # previous_state = self.get_state_file()
-        # logging.info(previous_state.get('some_state_parameter'))
-
         # Create output table (Tabledefinition - just metadata)
         incremental = params.get(KEY_INCREMENTAL)
         table = self.create_out_table_definition('conversions.csv',
@@ -78,15 +74,17 @@ class Component(ComponentBase):
 
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
         def stats_stop_after_attempts():
-            stats_data = adf.get_stats(urls)
             n_completed_retry.append("n")
+            retry_count = len(n_completed_retry)
+            logging.info(f'Retry number: {retry_count}')
+            stats_data = adf.get_stats(urls)
             if stats_data[1].count('OK') != 11:
                 raise IOError("Stopping after some attempts...")
             else:
                 return stats_data
 
         stats_data_ok = stats_stop_after_attempts()
-        logging.info(f"Retry count: {len(n_completed_retry)}")
+        logging.info(f"Total retry count: {len(n_completed_retry)}")
         logging.info('Reports have downloaded.')
 
         df_conversions = stats_data_ok[0].rename(columns={"conversions": "metric_value"})
@@ -96,7 +94,7 @@ class Component(ComponentBase):
         self.write_manifest(table)
 
         # Write new state - will be available next run
-        self.write_state_file({"some_state_parameter": "value"})
+        # self.write_state_file({"some_state_parameter": "value"})
 
 
 """
