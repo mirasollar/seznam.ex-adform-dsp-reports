@@ -54,7 +54,7 @@ class AdformAPI:
                 status = f'Other error occurred: {err}'
             else:
                 status = 'OK'
-            logging.info(f'Creating report number {report_number}: {status}')
+            logging.info(f'Status of the created report number {report_number}: {status}')
             endpoint = response.headers["Location"]
             stat_url = f'https://api.adform.com{endpoint}'
             stat_url_list.append(stat_url)
@@ -89,7 +89,7 @@ class AdformAPI:
                 status = f'Other error occurred: {err}'
             else:
                 status = 'OK'
-                logging.info(f'Extracting report number {report_number}: {status}')
+                logging.info(f'Status of the downloaded report number {report_number}: {status}')
                 message.append(status)
                 data = response.json()
                 df_stat_array = pd.DataFrame.from_dict(data)
