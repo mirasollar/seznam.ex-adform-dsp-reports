@@ -76,7 +76,7 @@ class Component(ComponentBase):
         def stats_stop_after_attempts():
             n_completed_retry.append("n")
             retry_count = len(n_completed_retry)
-            logging.info(f'Retry number: {retry_count}')
+            logging.info(f'Attempt number: {retry_count}')
             stats_data = adf.get_stats(urls)
             if stats_data[1].count('OK') != 11:
                 raise IOError("Stopping after some attempts...")
@@ -84,7 +84,7 @@ class Component(ComponentBase):
                 return stats_data
 
         stats_data_ok = stats_stop_after_attempts()
-        logging.info(f"Total retry count: {len(n_completed_retry)}")
+        logging.info(f"Total number of attempts: {len(n_completed_retry)}")
         logging.info('Reports have downloaded.')
 
         df_conversions = stats_data_ok[0].rename(columns={"conversions": "metric_value"})
