@@ -69,7 +69,7 @@ class Component(ComponentBase):
         logging.info('Creating reports on Adform...')
         urls = adf.get_stat_urls(start_num, end_num)
 
-        logging.info('Extracting reports from Adform...')
+        logging.info('Downloading reports from Adform...')
         n_completed_retry = []
 
         @retry(stop_max_attempt_number=5, wait_exponential_multiplier=2000)
