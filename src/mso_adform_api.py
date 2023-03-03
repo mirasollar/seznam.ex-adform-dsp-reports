@@ -70,9 +70,9 @@ class AdformAPI:
         conv_name_rank = 0
         report_number = 1
         message = []
-        # mezi jednotlivými staženími reportů je pro jistotu ještě další zpoždění.
-        # Každým cyklem se prodlužuje o sekundu.
-        sleep_in_sec = 5
+        # mezi jednotlivými staženími reportů musí být zpoždění minimálně 6 sekund,
+        # každým cyklem se prodlužuje o sekundu.
+        sleep_in_sec = 15
         # Zpoždění mezi vytvořením reportů a stažením prvního reportu.
         time.sleep(90)
         for i in range(len(url_list)):
