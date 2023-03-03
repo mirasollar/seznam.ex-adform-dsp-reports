@@ -100,7 +100,7 @@ class AdformAPI:
                     df_stage = pd.DataFrame()
                     df_stage = df_stat.iloc[:,  [0, 1, 2, 3, 4, 5, 6, conversions_column]]
                     df_stage["metric_name"] = metric_name
-                    df_stat_all = df_stat_all.append(df_stage, ignore_index=True)
+                    df_stat_all = pd.concat([df_stat_all, df_stage])
                     conv_name_rank += 1
             report_number += 1
         return df_stat_all, message
